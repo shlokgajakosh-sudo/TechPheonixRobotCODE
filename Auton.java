@@ -110,7 +110,25 @@ public class KitbotAuto extends LinearOpMode {
             backRightMotor.setPower(0);
             backLeftMotor.setPower(0);
 
-            autoTimer.reset(); 
+            autoTimer.reset();
+
+            frontRightMotor.setPower(-0.5);
+            frontLeftMotor.setPower(0.5);
+            backRightMotor.setPower(-0.5);
+            backLeftMotor.setPower(0.5);
+
+            if (autoTimer.seconds() < 0.3) continue;
+
+            frontRightMotor.setPower(0);
+            frontLeftMotor.setPower(0);
+            backRightMotor.setPower(0);
+            backLeftMotor.setPower(0);
+
+            autoTimer.reset();
+
+            intakeMotor.setPower(1);
+
+            frontRightMotor.setPower(
             
             
         }
