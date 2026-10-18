@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+/*package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -133,7 +133,135 @@ public class KitbotAuto extends LinearOpMode {
             
         }
     }
+}*/
+
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+@Autonomous(name="kb auto")
+public class KitbotAuto extends LinearOpMode {
+    @Override
+    public void runOpMode() throws InterruptedException {
+        // Declare motors
+        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
+        DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
+        DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
+        DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
+
+        DcMotor intake = hardwareMap.dcMotor.get("intakeMotor"); // Fixed variable name
+        CRServo intakeServo1 = hardwareMap.get(CRServo.class, "intakeServo1");
+        CRServo intakeServo2 = hardwareMap.get(CRServo.class, "intakeServo2");
+        DcMotor shooter = hardwareMap.dcMotor.get("shooter1");
+
+        // Reverse right-side motors
+        frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        waitForStart();
+
+        if (isStopRequested()) return;
+
+        // --- STEP 1: Initial movement & 1 second delay ---
+        frontRightMotor.setPower(0.5);
+        backRightMotor.setPower(-0.5);
+        frontLeftMotor.setPower(-0.5);
+        backLeftMotor.setPower(0.5);
+        sleep(1000); // Replaces the timer check
+
+        // --- STEP 2: Stop motors & start shooter ---
+        stopMotors(frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor);
+        shooter.setPower(0.5);
+
+        // --- STEP 3: Movement sequence ---
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(-0.5);
+        backRightMotor.setPower(-0.5);
+        backLeftMotor.setPower(0.5);
+        sleep(500); // Adjust duration as needed
+
+        // --- STEP 4: Turn on intake ---
+        intake.setPower(0.5);
+
+        // --- STEP 5: Drive forward ---
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5);
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        sleep(500);
+
+        // --- STEP 6: Drive backward ---
+        frontRightMotor.setPower(-0.5);
+        frontLeftMotor.setPower(-0.5);
+        backRightMotor.setPower(-0.5);
+        backLeftMotor.setPower(-0.5);
+        sleep(500);
+
+        // --- STEP 7: Strafe / turn and increase shooter power ---
+        frontRightMotor.setPower(-0.5);
+        frontLeftMotor.setPower(0.5);
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(-0.5);
+        shooter.setPower(1.0);
+        sleep(500);
+
+        // --- STEP 8: Counter movement for 0.5 seconds ---
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(-0.5);
+        backRightMotor.setPower(-0.5);
+        backLeftMotor.setPower(0.5);
+        sleep(500);
+
+        // Stop motors briefly
+        stopMotors(frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor);
+
+        // --- STEP 9: Servo activation & drive forward for 0.5s ---
+        intakeServo1.setPower(1.0);
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5);
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        sleep(500);
+
+        // Stop motors
+        stopMotors(frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor);
+
+        // --- STEP 10: Adjust angle for 0.3 seconds ---
+        frontRightMotor.setPower(-0.5);
+        frontLeftMotor.setPower(0.5);
+        backRightMotor.setPower(-0.5);
+        backLeftMotor.setPower(0.5);
+        sleep(300);  
+
+        // Stop motors
+        stopMotors(frontRightMotor, frontLeftMotor, backRightMotor, backLeftMotor);
+
+        // --- STEP 11: Final Intake and Drive action ---
+        intake.setPower(1.0);
+        frontRightMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5);
+        backRightMotor.setPower(0.5);
+        backLeftMotor.setPower(0.5);
+        
+        // Keeps running until opMode stops or finishes
+        while (opModeIsActive()) {
+            // Add any final holding loop logic here if needed
+        }
+    }
+
+    // Helper method to stop all drive motors easily
+    private void stopMotors(DcMotor fr, DcMotor fl, DcMotor br, DcMotor bl) {
+        fr.setPower(0);
+        fl.setPower(0);
+        br.setPower(0);
+        bl.setPower(0);
+    }
 }
+
 
 package org.firstinspires.ftc.teamcode.game;
 
@@ -148,7 +276,7 @@ public class MecanumTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
-        // Make sure your ID's match your configuration
+        // Make sure your IDs match your configuration
         DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
         DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
         DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
@@ -159,9 +287,9 @@ public class MecanumTeleOp extends LinearOpMode {
         CRServo intakeServo2 = hardwareMap.get(CRServo.class, "intakeServo2");
 
         DcMotor shooter = hardwareMap.dcMotor.get("shooter1");
-        // Reversea the right side motors. This may be wrong for your setup.
+        //Reverse the right-side motors. This may be wrong for your setup.
         // If your robot moves backwards when commanded to go forwards,
-        // reverse the left side instead.
+        //Reverse the left side instead.
         // See the note about this earlier on this page.
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -188,7 +316,7 @@ public class MecanumTeleOp extends LinearOpMode {
                 intakeServo1.setPower(0);
                 intakeServo2.setPower(0);
             }
-            if (gamepad1.b) {
+            /*if (gamepad1.b) {
                 intakeServo1.setPower(1);
             } else {
                 intakeServo1.setPower(0);
@@ -197,7 +325,7 @@ public class MecanumTeleOp extends LinearOpMode {
                 intakeServo2.setPower(1);
             } else {
                 intakeServo2.setPower(0);
-            }
+            }*/
             if (gamepad1.y) {
                 shooter.setPower(0.5);
             } else {
@@ -220,3 +348,5 @@ public class MecanumTeleOp extends LinearOpMode {
         }
     }
 }
+
+
