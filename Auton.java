@@ -203,7 +203,7 @@ public class KitbotAuto extends LinearOpMode {
 
         // --- STEP 7: Strafe / turn and increase shooter power ---
         frontRightMotor.setPower(-0.5);
-        frontLeftMotor.setPower(0.5);
+        frontLeftMotor.setPower(0.5); 
         backRightMotor.setPower(0.5);
         backLeftMotor.setPower(-0.5);
         shooter.setPower(1.0);
